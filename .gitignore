@@ -1,0 +1,25 @@
+# Maven build output
+target/
+
+# Compiled Java files
+*.class
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+hs_err_pid*
+
+# Local editor and IDE configuration
+.vscode/
+.idea/
+*.iml
+.settings/
+.project
+.classpath
+.metadata/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini
