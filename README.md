@@ -68,10 +68,9 @@ O Selenium Manager gerencia automaticamente o ChromeDriver compatível quando ne
 Clone o repositório:
 
 ```bash
-git clone https://github.com/SEU-USUARIO/qa-selenium-java.git
+git clone https://github.com/KaiqueSnts/qa-selenium-java.git
 ```
 
-Substitua `SEU-USUARIO` pelo seu nome de usuário do GitHub antes de executar o comando.
 
 Acesse a pasta do projeto:
 
