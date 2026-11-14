@@ -117,4 +117,5 @@ jobs:
       - id: deployment
         uses: actions/deploy-pages@v4
       - name: Add report link to the run summary
-        run: echo "### Test report: ${{ steps.deployment.outputs.page_url }}" >> "$GITHUB_STEP_SUMMARY"
+        run: |
+          echo "### Test report: ${{ steps.deployment.outputs.page_url }}" >> "$GITHUB_STEP_SUMMARY"
