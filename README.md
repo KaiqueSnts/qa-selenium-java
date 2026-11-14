@@ -137,13 +137,31 @@ mvn -Dgroups="web & regression" test
 
 O Surefire grava os resultados JUnit em XML em `target/surefire-reports/`. A extensão de screenshots salva capturas de falhas de testes web em `target/screenshots/`. Na CI, os XML e as capturas são publicados como artefatos do workflow.
 
-Depois de executar os testes localmente, gere o relatório HTML com:
+Depois de executar os testes localmente, gere o relatório HTML do Surefire e o dashboard:
+
+### Bash / Linux
 
 ```bash
+mvn clean test
 mvn surefire-report:report-only
+mkdir -p target/site
+cp target/reports/surefire.html target/site/surefire.html
+javac --release 21 -d target/dashboard-generator scripts/GenerateDashboard.java
+java -cp target/dashboard-generator GenerateDashboard target/surefire-reports target/site/index.html
 ```
 
-O relatório é criado em `target/site/surefire-report.html`. No GitHub Actions, o workflow gera esse HTML a partir dos XML de Surefire e publica no GitHub Pages em execuções que não sejam pull requests.
+### Windows PowerShell
+
+```powershell
+mvn clean test
+mvn surefire-report:report-only
+New-Item -ItemType Directory -Force target/site | Out-Null
+Copy-Item target/reports/surefire.html target/site/surefire.html
+javac --release 21 -d target/dashboard-generator scripts/GenerateDashboard.java
+java -cp target/dashboard-generator GenerateDashboard target/surefire-reports target/site/index.html
+```
+
+O dashboard interativo é criado em `target/site/index.html` a partir dos XML reais em `target/surefire-reports/`. O relatório HTML original do Maven Surefire é preservado em `target/site/surefire.html`. O dashboard funciona como HTML estático, sem backend ou serviços externos. No GitHub Actions, ambos são gerados a partir dos relatórios XML; o dashboard é publicado no GitHub Pages em execuções que não sejam pull requests.
 
 ## Resultados da validação local
 
