@@ -3,13 +3,14 @@ package com.qa.automation.pages;
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 public class InventoryPage extends BasePage {
     private static final By PAGE_TITLE = By.className("title");
     private static final By PRODUCT_NAMES = By.className("inventory_item_name");
     private static final By CART_BADGE = By.className("shopping_cart_badge");
     private static final By CART_LINK = By.className("shopping_cart_link");
+    private static final By MENU_BUTTON = By.id("react-burger-menu-btn");
+    private static final By LOGOUT_LINK = By.id("logout_sidebar_link");
 
     public InventoryPage(WebDriver driver) {
         super(driver);
@@ -18,6 +19,11 @@ public class InventoryPage extends BasePage {
     public boolean isLoaded() {
         return driver.getCurrentUrl().contains("inventory.html")
                 && "Products".equals(getText(PAGE_TITLE));
+    }
+
+    public InventoryPage open(String baseUrl) {
+        driver.get(baseUrl.replaceAll("/$", "") + "/inventory.html");
+        return this;
     }
 
     public String getTitle() {
@@ -32,12 +38,20 @@ public class InventoryPage extends BasePage {
         click(productButton("add-to-cart", productName));
     }
 
+    public void removeProductFromCart(String productName) {
+        click(productButton("remove", productName));
+    }
+
     public int getCartItemCount() {
-        return driver.findElements(CART_BADGE).stream()
-                .map(WebElement::getText)
-                .mapToInt(Integer::parseInt)
-                .findFirst()
-                .orElse(0);
+        return getOptionalCount(CART_BADGE);
+    }
+
+    public void waitForCartItemCount(int expectedCount) {
+        if (expectedCount == 0) {
+            waitUntilNoElements(CART_BADGE);
+        } else {
+            waitForText(CART_BADGE, Integer.toString(expectedCount));
+        }
     }
 
     public boolean isProductInCart(String productName) {
@@ -47,6 +61,11 @@ public class InventoryPage extends BasePage {
     public CartPage openCart() {
         click(CART_LINK);
         return new CartPage(driver);
+    }
+
+    public void logout() {
+        click(MENU_BUTTON);
+        click(LOGOUT_LINK);
     }
 
     private By productButton(String action, String productName) {

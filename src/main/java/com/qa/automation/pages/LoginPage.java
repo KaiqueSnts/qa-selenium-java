@@ -19,6 +19,11 @@ public class LoginPage extends BasePage {
         return this;
     }
 
+    public LoginPage open(String baseUrl) {
+        driver.get(baseUrl);
+        return this;
+    }
+
     public InventoryPage login(String username, String password) {
         type(USERNAME, username);
         type(PASSWORD, password);
@@ -28,5 +33,9 @@ public class LoginPage extends BasePage {
 
     public String getErrorMessage() {
         return getText(ERROR_MESSAGE);
+    }
+
+    public boolean isLoginButtonVisible() {
+        return isVisible(LOGIN_BUTTON);
     }
 }

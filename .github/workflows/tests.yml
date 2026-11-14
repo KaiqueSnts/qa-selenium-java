@@ -1,0 +1,120 @@
+name: Java Automation Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  HEADLESS: 'true'
+
+jobs:
+  api:
+    name: REST API tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Run API smoke tests
+        if: github.event_name == 'pull_request'
+        run: mvn -B -Dgroups="api & smoke" test
+      - name: Run complete API suite
+        if: github.event_name != 'pull_request'
+        run: mvn -B -Dgroups=api test
+      - name: Upload JUnit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-api-reports
+          path: target/surefire-reports/
+          if-no-files-found: ignore
+          retention-days: 14
+
+  web:
+    name: Web and E2E tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Run web smoke tests
+        if: github.event_name == 'pull_request'
+        run: mvn -B -Dgroups="web & smoke" test
+      - name: Run complete web and E2E suite
+        if: github.event_name != 'pull_request'
+        run: mvn -B -Dgroups=web test
+      - name: Upload JUnit reports and failure screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-web-reports
+          path: |
+            target/surefire-reports/
+            target/screenshots/
+          if-no-files-found: ignore
+          retention-days: 14
+
+  report:
+    name: Merge and publish test report
+    needs: [api, web]
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - uses: actions/download-artifact@v4
+        with:
+          path: target/surefire-reports
+          pattern: junit-*-reports
+          merge-multiple: true
+      - name: Generate HTML report
+        run: mvn -B surefire-report:report-only
+      - name: Set report as Pages entry point
+        run: cp target/site/surefire-report.html target/site/index.html
+      - uses: actions/upload-artifact@v4
+        with:
+          name: junit-html-report
+          path: target/site/surefire-report.html
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Upload Pages artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: target/site
+
+  deploy:
+    name: Publish report to GitHub Pages
+    needs: report
+    if: ${{ !cancelled() && needs.report.result == 'success' && github.event_name != 'pull_request' }}
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Add report link to the run summary
+        run: echo "### Test report: ${{ steps.deployment.outputs.page_url }}" >> "$GITHUB_STEP_SUMMARY"

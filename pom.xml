@@ -10,13 +10,14 @@
     <version>1.0-SNAPSHOT</version>
 
     <name>qa-selenium-java</name>
-    <description>Java test automation project using Selenium and JUnit 5</description>
+    <description>Java and Selenium QA portfolio with UI, REST API, and E2E automation</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>21</maven.compiler.release>
         <selenium.version>4.27.0</selenium.version>
         <junit.version>5.11.4</junit.version>
+        <jackson.version>2.22.0</jackson.version>
     </properties>
 
     <dependencies>
@@ -26,6 +27,13 @@
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>${selenium.version}</version>
+        </dependency>
+
+        <!-- JSON mapping for the Restful Booker API tests -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
 
         <!-- JUnit 5 -->
@@ -55,6 +63,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.2</version>
+            </plugin>
+
+            <!-- HTML summary generated from JUnit Surefire XML reports -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
                 <version>3.5.2</version>
             </plugin>
 

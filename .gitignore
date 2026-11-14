@@ -1,4 +1,4 @@
-# Maven build output
+# Maven build output and test artifacts
 target/
 
 # Compiled Java files
@@ -18,6 +18,9 @@ hs_err_pid*
 .project
 .classpath
 .metadata/
+
+# Local environment and browser state
+.env
 
 # Operating system files
 .DS_Store

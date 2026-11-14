@@ -2,6 +2,7 @@ package com.qa.automation.pages;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.function.Predicate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
@@ -41,18 +42,80 @@ public abstract class BasePage {
         wait.until(webDriver -> webDriver.findElements(locator).isEmpty());
     }
 
+    protected void waitForElementCount(By locator, int expectedCount) {
+        wait.until(webDriver -> webDriver.findElements(locator).size() == expectedCount);
+    }
+
+    protected void waitForText(By locator, String expectedText) {
+        wait.until(webDriver -> {
+            try {
+                WebElement element = webDriver.findElement(locator);
+                return element.isDisplayed() && expectedText.equals(element.getText());
+            } catch (StaleElementReferenceException exception) {
+                return false;
+            }
+        });
+    }
+
     protected void click(By locator) {
-        wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
+        wait.until(webDriver -> {
+            try {
+                WebElement element = ExpectedConditions.elementToBeClickable(locator).apply(webDriver);
+                if (element == null) {
+                    return false;
+                }
+                element.click();
+                return true;
+            } catch (StaleElementReferenceException exception) {
+                return false;
+            }
+        });
     }
 
     protected void type(By locator, String text) {
-        WebElement element = findVisible(locator);
-        element.clear();
-        element.sendKeys(text);
+        wait.until(webDriver -> {
+            try {
+                WebElement element = ExpectedConditions.visibilityOfElementLocated(locator).apply(webDriver);
+                if (element == null || !element.isEnabled()) {
+                    return false;
+                }
+                element.clear();
+                element.sendKeys(text);
+                WebElement updatedElement = webDriver.findElement(locator);
+                return updatedElement.isDisplayed() && text.equals(updatedElement.getDomProperty("value"));
+            } catch (StaleElementReferenceException exception) {
+                return false;
+            }
+        });
     }
 
     protected String getText(By locator) {
-        return findVisible(locator).getText();
+        return wait.until(webDriver -> {
+            try {
+                WebElement element = webDriver.findElement(locator);
+                return element.isDisplayed() ? element.getText() : null;
+            } catch (StaleElementReferenceException exception) {
+                return null;
+            }
+        });
+    }
+
+    protected void waitUntil(Predicate<WebDriver> condition) {
+        wait.until(condition::test);
+    }
+
+    protected int getOptionalCount(By locator) {
+        return wait.until(webDriver -> {
+            List<WebElement> elements = webDriver.findElements(locator);
+            if (elements.isEmpty()) {
+                return 0;
+            }
+            try {
+                return Integer.parseInt(elements.get(0).getText());
+            } catch (StaleElementReferenceException exception) {
+                return null;
+            }
+        });
     }
 
     protected boolean isVisible(By locator) {
