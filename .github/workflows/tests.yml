@@ -95,6 +95,12 @@ jobs:
           merge-multiple: true
       - name: Generate HTML report
         run: mvn -B surefire-report:report-only
+      - name: Generate QA dashboard
+        run: |
+          mkdir -p target/site
+          cp target/reports/surefire.html target/site/surefire.html
+          javac --release 21 -d target/dashboard-generator scripts/GenerateDashboard.java
+          java -cp target/dashboard-generator GenerateDashboard target/surefire-reports target/site/index.html
       - name: Inspect generated report files
         if: always()
         run: |
@@ -102,16 +108,13 @@ jobs:
           find target/reports -maxdepth 3 -type f -print 2>/dev/null || true
           echo "=== target/surefire-reports ==="
           find target/surefire-reports -maxdepth 3 -type f -print 2>/dev/null || true
-
-      - name: Set report as Pages entry point
-        run: |
-          mkdir -p target/site
-          cp target/reports/surefire.html target/site/index.html
+          echo "=== target/site ==="
+          find target/site -maxdepth 2 -type f -print 2>/dev/null || true
 
       - uses: actions/upload-artifact@v4
         with:
           name: junit-html-report
-          path: target/reports/surefire.html
+          path: target/site/surefire.html
           if-no-files-found: ignore
           retention-days: 14
       - name: Upload Pages artifact
