@@ -58,14 +58,21 @@ jobs:
       - name: Run complete web and E2E suite
         if: github.event_name != 'pull_request'
         run: mvn -B -Dgroups=web test
-      - name: Upload JUnit reports and failure screenshots
+      - name: Upload JUnit reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: junit-web-reports
-          path: |
-            target/surefire-reports/
-            target/screenshots/
+          path: target/surefire-reports/
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Upload failure screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-failure-screenshots
+          path: target/screenshots/
           if-no-files-found: ignore
           retention-days: 14
 
@@ -88,12 +95,23 @@ jobs:
           merge-multiple: true
       - name: Generate HTML report
         run: mvn -B surefire-report:report-only
+      - name: Inspect generated report files
+        if: always()
+        run: |
+          echo "=== target/reports ==="
+          find target/reports -maxdepth 3 -type f -print 2>/dev/null || true
+          echo "=== target/surefire-reports ==="
+          find target/surefire-reports -maxdepth 3 -type f -print 2>/dev/null || true
+
       - name: Set report as Pages entry point
-        run: cp target/site/surefire-report.html target/site/index.html
+        run: |
+          mkdir -p target/site
+          cp target/reports/surefire.html target/site/index.html
+
       - uses: actions/upload-artifact@v4
         with:
           name: junit-html-report
-          path: target/site/surefire-report.html
+          path: target/reports/surefire.html
           if-no-files-found: ignore
           retention-days: 14
       - name: Upload Pages artifact
