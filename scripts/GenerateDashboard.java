@@ -207,15 +207,15 @@ public final class GenerateDashboard {
                   <style>
                     :root {
                       color-scheme: dark;
-                      --bg: #090e16; --sidebar: #0d1622; --surface: #111b29;
-                      --surface-2: #162437; --line: #29394d; --text: #eef4fb;
-                      --muted: #a0afc1; --subtle: #8294aa; --cyan: #67d9ee; --green: #65dda5;
+                      --bg: #080d15; --sidebar: rgba(13, 22, 35, .78); --surface: #111a27;
+                      --surface-raised: #151f2e; --line: #28384b; --text: #f0f5fb;
+                      --muted: #a4b2c3; --subtle: #899bb1; --cyan: #6fd9ec; --green: #65dda5;
                       --red: #f2878d; --amber: #edc16f; --blue: #83baff;
                       --ease-out: cubic-bezier(.23, 1, .32, 1);
                     }
                     * { box-sizing: border-box; }
                     body { margin: 0; min-height: 100vh; color: var(--text);
-                      background: radial-gradient(ellipse at 72% -22%, #123047 0, transparent 42%), var(--bg);
+                      background: radial-gradient(ellipse at 78% -30%, #102638 0, transparent 40%), var(--bg);
                       font: 14px/1.55 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
                       scrollbar-color: #34475d #0d1520; scrollbar-width: thin; }
                     button, input, select { font: inherit; color: inherit; }
@@ -225,145 +225,183 @@ public final class GenerateDashboard {
                     ::-webkit-scrollbar-thumb { border: 2px solid #0d1520; border-radius: 999px; background: #34475d; }
                     ::-webkit-scrollbar-thumb:hover { background: #49647e; }
                     .app { min-height: 100vh; display: grid; grid-template-columns: 248px minmax(0, 1fr); }
-                    .sidebar { position: sticky; top: 0; height: 100vh; gap: 38px; padding: 25px 17px;
-                      display: flex; flex-direction: column; background: var(--sidebar); border-right: 1px solid #23364a; }
-                    .brand { display: flex; align-items: center; min-height: 42px; gap: 11px; padding: 0 8px;
+                    .sidebar { position: sticky; top: 0; z-index: 2; height: 100vh; gap: 34px; padding: 25px 16px;
+                      display: flex; flex-direction: column; background: var(--sidebar); border-right: 1px solid #34465a;
+                      -webkit-backdrop-filter: blur(18px) saturate(1.18); backdrop-filter: blur(18px) saturate(1.18);
+                      box-shadow: inset -1px 0 #d9f8ff0c, inset 0 1px #ffffff12, 10px 0 34px #02081126; }
+                    .brand { display: flex; align-items: center; min-height: 44px; gap: 12px; padding: 0 8px;
                       font-size: 15px; font-weight: 700; letter-spacing: -.025em; }
-                    .brand-mark { display: grid; place-items: center; flex: 0 0 34px; width: 34px; height: 34px;
-                      border: 1px solid #2b7187; border-radius: 10px; color: var(--cyan);
-                      background: linear-gradient(145deg, #173246, #10202d); box-shadow: inset 0 1px 0 #b6f5ff16; }
+                    .brand-mark { display: grid; place-items: center; flex: 0 0 36px; width: 36px; height: 36px;
+                      border: 1px solid #39788b; border-radius: 11px; color: var(--cyan);
+                      background: linear-gradient(145deg, #19354a, #10202e); box-shadow: inset 0 1px 0 #c8f7ff20; }
                     .brand-mark svg { width: 20px; height: 20px; display: block; }
-                    .side-label { padding: 0 12px 9px; color: #8294aa; font-size: 10px; font-weight: 700;
-                      letter-spacing: .14em; text-transform: uppercase; }
-                    .nav { display: grid; gap: 5px; }
-                    .nav a { min-height: 40px; display: flex; align-items: center; gap: 11px; padding: 8px 11px;
-                      border: 1px solid transparent; border-radius: 9px; color: #a4b3c5; text-decoration: none;
-                      transition: color .16s ease, background-color .16s ease, border-color .16s ease; }
-                    .nav-icon { width: 16px; height: 16px; flex: 0 0 16px; color: #8294aa; }
-                    .nav a:hover { color: #d5f7fb; background: #142334; }
-                    .nav a.active { color: #a8edf5; border-color: #284657; background: #14283a; box-shadow: inset 2px 0 var(--cyan); }
+                    .side-label { padding: 0 12px 9px; color: #8fa1b7; font-size: 10px; font-weight: 700;
+                      letter-spacing: .13em; text-transform: uppercase; }
+                    .nav { display: grid; gap: 6px; }
+                    .nav a { min-height: 42px; display: flex; align-items: center; gap: 11px; padding: 9px 11px;
+                      border: 1px solid #ffffff08; border-radius: 10px; color: #a8b7c8; text-decoration: none;
+                      background: #ffffff03; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+                      transition: color .16s ease, background-color .16s ease, border-color .16s ease, transform .16s var(--ease-out); }
+                    .nav-icon { width: 17px; height: 17px; flex: 0 0 17px; color: #91a4bb; }
+                    .nav a:hover { color: #d9f8fb; background: #ffffff0c; }
+                    .nav a.active { color: #b9f3f7; border-color: #5795a044; background: #5ec9df1a;
+                      box-shadow: inset 2px 0 var(--cyan), 0 5px 18px #01080e2b; }
                     .nav a.active .nav-icon { color: var(--cyan); }
-                    .sidebar-note { margin-top: auto; padding: 15px 11px 0; border-top: 1px solid var(--line);
-                      color: #899bb0; font-size: 11px; line-height: 1.7; }
-                    main { width: 100%; min-width: 0; max-width: 1680px; margin: 0 auto; padding: 22px clamp(22px, 3.2vw, 52px) 38px; }
-                    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 16px;
-                      min-height: 52px; margin-bottom: 34px; padding: 9px 13px;
-                      border: 1px solid #2b4057; border-radius: 11px; background: rgba(18, 31, 46, .74);
-                      box-shadow: 0 7px 18px #03081124; }
-                    .glass, .control, .glass-button { -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
-                    .topbar-title { display: flex; align-items: center; gap: 9px; min-width: 0; color: #b4c1d0; font-size: 12px; letter-spacing: .005em; }
-                    .run-mark { width: 18px; height: 18px; display: grid; place-items: center; border: 1px solid #2b5969;
-                      border-radius: 6px; color: var(--cyan); background: #142a38; }
-                    .run-mark svg { width: 12px; height: 12px; }
-                    .avatar { display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid #2c455b;
-                      border-radius: 50%; background: #152638; color: #a5eaf3; font-size: 12px; font-weight: 700; }
-                    .heading { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 22px; }
-                    h1 { margin: 0 0 7px; font-size: 34px; line-height: 1.15; letter-spacing: -.035em; }
+                    .sidebar-note { margin-top: auto; padding: 15px 11px 0; border-top: 1px solid #ffffff19;
+                      color: #9aabbd; font-size: 11px; line-height: 1.7; }
+                    main { width: 100%; min-width: 0; padding: 22px clamp(22px, 3.2vw, 52px) 38px; }
+                    .topbar { position: relative; z-index: 3; display: flex; justify-content: space-between; align-items: center; gap: 16px;
+                      min-height: 56px; margin-bottom: 30px; padding: 10px 14px;
+                      border: 1px solid #9ebbd23b; border-radius: 12px; background: linear-gradient(115deg, #d8f5ff0d, transparent 38%), #142338a8;
+                      box-shadow: inset 0 1px #ffffff1c, 0 8px 24px #02081136; }
+                    .glass, .control, .glass-button { -webkit-backdrop-filter: blur(14px) saturate(1.16); backdrop-filter: blur(14px) saturate(1.16); }
+                    .topbar-title { display: flex; align-items: center; gap: 10px; min-width: 0; color: #c1ccda; font-size: 12px; letter-spacing: .005em; }
+                    .topbar-context { color: #f0f5fb; font-weight: 600; }
+                    .breadcrumb-separator { color: #62778e; }
+                    .run-mark { width: 22px; height: 22px; display: grid; place-items: center; border: 1px solid #4b879950;
+                      border-radius: 7px; color: var(--cyan); background: #163044a8; }
+                    .run-mark svg { width: 14px; height: 14px; }
+                    .topbar-meta { display: flex; align-items: center; gap: 10px; }
+                    .source-chip { display: inline-flex; align-items: center; gap: 7px; padding: 6px 9px; border: 1px solid #91a8be22;
+                      border-radius: 8px; color: #afbdcd; background: #ffffff08; font-size: 10px; font-weight: 600; }
+                    .source-chip svg { width: 13px; height: 13px; color: var(--cyan); }
+                    .avatar { display: grid; place-items: center; width: 32px; height: 32px; border: 1px solid #80adc33f;
+                      border-radius: 9px; background: #1a3044; color: #c0f2f7; font-size: 10px; font-weight: 700; letter-spacing: .04em; }
+                    .heading { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 25px; }
+                    .page-intro { min-width: 0; }
+                    h1 { margin: 0 0 7px; font-size: 36px; line-height: 1.12; letter-spacing: -.035em; }
                     .subtitle { max-width: 680px; margin: 0; color: var(--muted); font-size: 13px; }
-                    .generated { min-width: 190px; color: #91a2b7; font-size: 11px; line-height: 1.8; text-align: right; }
-                    .generated strong { color: #dce6f0; font-size: 12px; font-weight: 600; }
-                    .run-state { display: flex; align-items: baseline; justify-content: flex-end; gap: 8px; margin-top: 8px; color: var(--muted); }
-                    .run-state strong { color: var(--cyan); font-size: 20px; line-height: 1; letter-spacing: -.035em; font-variant-numeric: tabular-nums; }
-                    .run-state-badge { display: inline-flex; align-items: center; gap: 6px; width: fit-content; margin-left: auto;
-                      padding: 5px 9px; border: 1px solid #245441; border-radius: 999px; color: #78e0ae;
-                      background: #10271f; font-size: 11px; font-weight: 650; }
+                    .run-summary { min-width: 290px; display: grid; justify-items: end; gap: 7px; color: #96a8bc; font-size: 11px; }
+                    .generated { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 5px; line-height: 1.5; }
+                    .generated strong { color: #e1e9f2; font-size: 11px; font-weight: 600; }
+                    .run-summary-meta { display: flex; align-items: center; justify-content: flex-end; gap: 14px; }
+                    .run-state { display: flex; align-items: baseline; gap: 6px; color: #a9b8c9; }
+                    .run-state strong { color: var(--cyan); font-size: 19px; line-height: 1; letter-spacing: -.025em; font-variant-numeric: tabular-nums; }
+                    .run-duration { color: #a9b8c9; }
+                    .run-duration strong { color: #e1e9f2; font-weight: 600; font-variant-numeric: tabular-nums; }
+                    .run-state-badge { display: inline-flex; align-items: center; gap: 7px; width: fit-content;
+                      padding: 5px 9px; border: 1px solid #3f8a684b; border-radius: 8px; color: #9ae8bd;
+                      background: #10271f; font-size: 10px; font-weight: 650; }
                     .run-state-badge::before { width: 6px; height: 6px; border-radius: 50%; background: currentColor; content: ""; }
-                    .run-state-badge.warning { border-color: #66512c; color: #f0c979; background: #2b2417; }
-                    .run-state-badge.failed { border-color: #65333b; color: #f38e92; background: #2d1b22; }
-                    .metrics { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; margin-bottom: 17px;
-                      overflow: hidden; border: 1px solid #29394d; border-radius: 12px; background: #101925; }
-                    .metric { min-height: 105px; padding: 16px 18px; border: 0; border-right: 1px solid #29394d; border-radius: 0; background: transparent; }
-                    .metric:last-child { border-right: 0; }
-                    .metric-label { color: #a6b4c5; font-size: 11px; font-weight: 600; letter-spacing: .01em; }
-                    .metric-value { margin: 9px 0 3px; color: #eaf1f8; font-size: 28px; font-weight: 680; letter-spacing: -.035em; font-variant-numeric: tabular-nums; }
-                    .metric-note { color: #899bb0; font-size: 10px; }
+                    .run-state-badge.warning { border-color: #90713b61; color: #f2d186; background: #302717; }
+                    .run-state-badge.failed { border-color: #a4495061; color: #ffafb3; background: #321b22; }
+                    .metrics { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin-bottom: 18px; }
+                    .metric { min-width: 0; min-height: 112px; padding: 16px 17px; border: 1px solid #2b3a4e;
+                      border-radius: 12px; background: #101925; box-shadow: 0 8px 20px #0207111c; }
+                    .metric-label { color: #b5c2d1; font-size: 12px; font-weight: 600; letter-spacing: .01em; }
+                    .metric-value { margin: 9px 0 3px; color: #f0f5fb; font-size: 29px; font-weight: 700;
+                      line-height: 1.12; letter-spacing: -.035em; font-variant-numeric: tabular-nums; }
+                    .metric-note { color: #a2b1c2; font-size: 11px; }
                     .metric.pass .metric-value { color: var(--green); }
                     .metric.fail .metric-value, .metric.error .metric-value { color: var(--red); }
                     .metric.skip .metric-value { color: var(--amber); }
-                    .panels { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr); gap: 14px; margin: 14px 0; }
-                    .panel { min-width: 0; border: 1px solid #29394d; border-radius: 12px; padding: 19px 20px; background: #101925; }
-                    .panel h2, .results-heading h2 { margin: 0; color: #e7eef6; font-size: 15px; font-weight: 650; letter-spacing: -.025em; }
-                    .panel-subtitle { margin: 4px 0 17px; color: #91a2b7; font-size: 11px; }
-                    .distribution { display: flex; width: 100%; height: 11px; overflow: hidden; border-radius: 999px; background: #243144; }
-                    .distribution span { transition: width .24s var(--ease-out); }
-                    .distribution .passed { background: var(--green); }
-                    .distribution .failed, .distribution .error { background: var(--red); }
-                    .distribution .skipped { background: var(--amber); }
-                    .legend { display: flex; flex-wrap: wrap; gap: 10px 15px; margin-top: 14px; }
-                    .legend-item { display: flex; align-items: center; gap: 7px; color: #aab8c8; font-size: 11px; }
-                    .dot { width: 7px; height: 7px; border-radius: 50%; }
-                    .category-list { display: grid; gap: 15px; }
-                    .category-row { display: grid; grid-template-columns: 68px minmax(50px, 1fr) auto; align-items: center; gap: 10px; }
-                    .category-name { color: #d9e3ee; font-size: 11px; }
-                    .category-meta { color: #a0afc1; font-size: 10px; font-variant-numeric: tabular-nums; }
-                    .category-track { height: 6px; overflow: hidden; border-radius: 999px; background: #233144; }
-                    .category-track span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #3aaec8, #67d9ec); }
-                    .results { margin-top: 16px; padding: 0; overflow: hidden; }
-                    .results-heading { display: flex; justify-content: space-between; align-items: center; gap: 14px; min-height: 58px; padding: 16px 19px; border-bottom: 1px solid var(--line); }
-                    .result-count { color: #a0afc1; font-size: 11px; font-variant-numeric: tabular-nums; }
-                    .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 11px 14px;
-                      border-bottom: 1px solid var(--line); background: rgba(16, 29, 43, .86); }
-                    .control { min-height: 36px; padding: 7px 10px; border: 1px solid #31445b; border-radius: 8px;
-                      background: rgba(9, 16, 26, .78); font-size: 12px; transition: border-color .16s ease, box-shadow .16s ease; }
+                    .panels { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr); gap: 15px; margin: 15px 0; }
+                    .panel { min-width: 0; border: 1px solid #2b3a4e; border-radius: 12px; padding: 20px 21px;
+                      background: radial-gradient(ellipse at 18% 0%, #20354b22, transparent 55%), #101925; }
+                    .panel h2, .results-heading h2 { margin: 0; color: #edf3fa; font-size: 15px; font-weight: 650; letter-spacing: -.02em; }
+                    .panel-subtitle { margin: 5px 0 18px; color: #aab8c9; font-size: 12px; }
+                    .distribution-layout { display: grid; grid-template-columns: minmax(130px, .8fr) minmax(0, 1fr); align-items: center; gap: 24px; }
+                    .distribution { position: relative; width: min(100%, 190px); aspect-ratio: 1; justify-self: center;
+                      border: 1px solid #ffffff14; border-radius: 50%; background: conic-gradient(var(--green) 0deg 360deg);
+                      box-shadow: inset 0 0 0 1px #00000040, 0 8px 22px #02071129; }
+                    .distribution::after { position: absolute; inset: 23%; border: 1px solid #ffffff12; border-radius: 50%;
+                      background: #101925; box-shadow: inset 0 1px 8px #02071170; content: ""; }
+                    .distribution-center { position: absolute; z-index: 1; inset: 23%; display: grid; align-content: center; justify-items: center; }
+                    .distribution-total { color: #f0f5fb; font-size: clamp(22px, 2.4vw, 30px); font-weight: 700;
+                      line-height: 1.05; font-variant-numeric: tabular-nums; }
+                    .distribution-caption { margin-top: 5px; color: #b1bece; font-size: 11px; }
+                    .legend { display: grid; gap: 8px; }
+                    .legend-item { display: grid; grid-template-columns: 10px minmax(0, 1fr) auto; align-items: center; gap: 9px;
+                      color: #c0ccda; font-size: 12px; }
+                    .legend-value { color: #eef4fb; font-variant-numeric: tabular-nums; }
+                    .dot { width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 0 3px #ffffff08; }
+                    .category-heading, .category-row { display: grid; grid-template-columns: 70px minmax(45px, 1fr) 82px 76px;
+                      align-items: center; gap: 10px; }
+                    .category-heading { margin-bottom: 10px; color: #9eafc2; font-size: 10px; font-weight: 650;
+                      letter-spacing: .06em; text-transform: uppercase; }
+                    .category-list { display: grid; gap: 14px; }
+                    .category-row { min-height: 28px; }
+                    .category-name { color: #e0e8f1; font-size: 12px; font-weight: 600; }
+                    .category-count, .category-rate { color: #c1ccda; font-size: 11px; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+                    .category-rate { color: var(--green); font-weight: 650; }
+                    .category-track { height: 8px; overflow: hidden; border-radius: 999px; background: #263448; }
+                    .category-track span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #3baec8, var(--cyan)); }
+                    .results { margin-top: 17px; padding: 0; overflow: hidden; }
+                    .results-heading { display: flex; justify-content: space-between; align-items: center; gap: 14px; min-height: 60px; padding: 17px 20px; border-bottom: 1px solid var(--line); }
+                    .result-count { color: #b2c0d0; font-size: 12px; font-variant-numeric: tabular-nums; }
+                    .toolbar { position: relative; z-index: 1; display: flex; flex-wrap: wrap; align-items: center; gap: 9px; padding: 12px 15px;
+                      border-bottom: 1px solid #91a9c033; background: linear-gradient(110deg, #d9f6ff0b, transparent 45%), #17283bbd;
+                      box-shadow: inset 0 1px #ffffff14, 0 5px 16px #02071120; }
+                    .control { min-height: 38px; padding: 8px 11px; border: 1px solid #8ea8c04d; border-radius: 9px;
+                      background: #09121ebd; -webkit-backdrop-filter: blur(12px) saturate(1.16); backdrop-filter: blur(12px) saturate(1.16);
+                      box-shadow: inset 0 1px #ffffff0c; font-size: 12px; transition: border-color .16s ease, box-shadow .16s ease; }
                     .control:focus-visible, .glass-button:focus-visible, .nav a:focus-visible, summary:focus-visible {
                       outline: 2px solid var(--cyan); outline-offset: 2px; }
                     .control:focus-visible { border-color: var(--cyan); box-shadow: 0 0 0 3px #63d7ed1c; }
-                    .search { flex: 1 1 250px; }
-                    .toolbar select { min-width: 130px; }
-                    .glass-button { min-height: 36px; padding: 7px 11px; border: 1px solid #354c64; border-radius: 8px;
+                    .search { flex: 1 1 280px; }
+                    .toolbar select { min-width: 145px; }
+                    .sort-button { display: inline-flex; align-items: center; gap: 7px; padding: 5px 7px; border: 1px solid transparent;
+                      border-radius: 7px; color: inherit; background: #ffffff05; cursor: pointer; font: inherit; letter-spacing: inherit;
+                      text-transform: inherit; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+                    .sort-button:hover, .sort-button[aria-pressed="true"] { border-color: #7ca4c044; color: #dff8fb; background: #8ad9e711; }
+                    .sort-button:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+                    .sort-indicator { width: 12px; color: #95a9be; text-align: center; }
+                    .glass-button { min-height: 38px; padding: 8px 13px; border: 1px solid #7089a34f; border-radius: 9px;
                       cursor: pointer;
-                      background: rgba(27, 46, 64, .74); font-size: 11px; font-weight: 600;
+                      background: #243951b8; font-size: 11px; font-weight: 600;
                       transition: color .16s ease, border-color .16s ease, background-color .16s ease, transform .16s var(--ease-out); }
-                    .glass-button:hover { border-color: #4a8799; color: #b7f0f7; background: #1b3446; }
+                    .glass-button:hover { border-color: #7ec9d899; color: #d3f9fc; background: #29445dbf; }
                     .glass-button:active { transform: scale(.98); }
                     .table-wrap { overflow-x: auto; scrollbar-gutter: stable; }
                     table { width: 100%; min-width: 800px; border-collapse: collapse; }
-                    th { padding: 11px 14px; color: #9aabc0; text-align: left; font-size: 9px;
-                      letter-spacing: .12em; text-transform: uppercase; background: #111b29; }
-                    td { padding: 12px 14px; border-top: 1px solid #243448; color: #d5dfeb; vertical-align: top; font-size: 12px; }
+                    th { padding: 12px 15px; color: #aab9ca; text-align: left; font-size: 10px;
+                      letter-spacing: .08em; text-transform: uppercase; background: #151f2d; }
+                    td { padding: 13px 15px; border-top: 1px solid #243347; color: #dce5ef; vertical-align: top; font-size: 12px; }
                     tbody tr { transition: background-color .14s ease; }
-                    tbody tr:hover { background: #152232; }
-                    .test-name { color: #e7eef6; font-weight: 600; overflow-wrap: anywhere; }
-                    .test-class { color: #9aabc0; font-size: 11px; overflow-wrap: anywhere; }
-                    .category-pill, .status-pill { display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px;
-                      border-radius: 999px; font-size: 10px; font-weight: 600; white-space: nowrap; }
-                    .category-pill { border: 1px solid #294958; color: #9bddeb; background: #142b39; }
+                    tbody tr:hover { background: #182638; }
+                    .test-name { color: #f0f5fb; font-weight: 600; overflow-wrap: anywhere; }
+                    .test-class { color: #b1bece; font-size: 12px; overflow-wrap: anywhere; }
+                    .category-pill, .status-pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 9px;
+                      border: 1px solid transparent; border-radius: 8px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+                    .category-pill { border-color: #3d708341; color: #b5eaf1; background: #183344; }
                     .status-pill::before { width: 6px; height: 6px; border-radius: 50%; background: currentColor; content: ""; }
-                    .status-pill.passed { color: #82e5b2; background: #122b22; }
-                    .status-pill.failed, .status-pill.error { color: #ff9ba0; background: #321e25; }
-                    .status-pill.skipped { color: #f1cd7e; background: #302817; }
-                    .details { max-width: 360px; color: #9aaabd; font-size: 10px; }
-                    .details summary { color: #ff9ba0; cursor: pointer; font-weight: 600; overflow-wrap: anywhere; }
-                    .details pre { max-height: 240px; overflow: auto; color: #ddb6bc; white-space: pre-wrap; overflow-wrap: anywhere; }
-                    .empty { display: grid; justify-items: center; gap: 8px; padding: 35px 20px; color: #a3b2c3;
+                    .status-pill.passed { border-color: #3f8a684b; color: #9ce8be; background: #142b23; }
+                    .status-pill.failed, .status-pill.error { border-color: #a449504b; color: #ffadb2; background: #321d24; }
+                    .status-pill.skipped { border-color: #90713b4b; color: #f3d58f; background: #302819; }
+                    .details { max-width: 380px; color: #b4c1d0; font-size: 12px; }
+                    .details summary { color: #ffb3b7; cursor: pointer; font-weight: 650; overflow-wrap: anywhere; }
+                    .details pre { max-width: 100%; max-height: 260px; margin: 8px 0 0; padding: 10px; overflow: auto;
+                      border: 1px solid #573840; border-radius: 8px; color: #e0c3c6; background: #0b1119; font: 11px/1.55 ui-monospace, SFMono-Regular, Consolas, monospace;
+                      white-space: pre-wrap; overflow-wrap: anywhere; }
+                    .details-unavailable { color: #d9b978; font-size: 11px; }
+                    .empty { display: grid; justify-items: center; gap: 8px; padding: 38px 20px; color: #a8b7c8;
                       font-size: 12px; text-align: center; background: #0e1722; }
                     .empty[hidden] { display: none; }
                     .empty-mark { width: 30px; height: 30px; display: grid; place-items: center; border: 1px solid #31445a;
                       border-radius: 9px; color: #9aabc0; background: #152233; }
                     .empty-mark svg { width: 16px; height: 16px; }
                     .table-wrap:focus-visible { outline: 2px solid var(--cyan); outline-offset: -2px; }
-                    footer { display: flex; justify-content: space-between; gap: 14px; padding: 16px 3px 0; color: #899bb0; font-size: 10px; }
+                    footer { display: flex; justify-content: space-between; gap: 14px; padding: 16px 3px 0; color: #a0afc1; font-size: 11px; }
                     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;
                       clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
                     @media (hover: hover) and (pointer: fine) {
                       .glass-button:hover { transform: translateY(-1px); }
                     }
                     @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-                      .sidebar { background: #0c131e; }
-                      .topbar, .toolbar { background: #142338; }
-                      .glass-button, .control { background: #142338; }
+                      .sidebar { background: #0d1623; }
+                      .topbar, .toolbar { background: #16263a; }
+                      .nav a, .sort-button { background: #17283b; }
+                      .glass-button { background: #293f57; }
+                      .control { background: #101a28; }
                     }
-                    @media (max-width: 1100px) {
+                    @media (max-width: 1240px) {
                       .app { grid-template-columns: 212px minmax(0, 1fr); }
                       .heading { align-items: flex-start; flex-direction: column; gap: 13px; }
-                      .generated { text-align: left; }
-                      .run-state-badge { margin-left: 0; }
-                      .run-state { justify-content: flex-start; }
+                      .run-summary { justify-items: start; }
+                      .generated, .run-summary-meta { justify-content: flex-start; }
                       .metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-                      .metric:nth-child(3) { border-right: 0; }
-                      .metric:nth-child(n + 4) { border-top: 1px solid #243346; }
                     }
-                    @media (max-width: 900px) {
+                    @media (max-width: 920px) {
                       .panels { grid-template-columns: 1fr; }
                     }
                     @media (max-width: 760px) {
@@ -372,20 +410,23 @@ public final class GenerateDashboard {
                       .brand { margin-bottom: 10px; }
                       .side-label, .sidebar-note { display: none; }
                       .nav { display: flex; overflow-x: auto; gap: 5px; }
-                      .nav a { min-height: 36px; white-space: nowrap; padding: 7px 10px; }
+                      .nav a { min-height: 38px; white-space: nowrap; padding: 7px 10px; }
+                      .nav::-webkit-scrollbar { display: none; }
                       main { padding: 16px 13px 28px; }
                       .topbar { margin-bottom: 23px; }
                       .heading { align-items: flex-start; flex-direction: column; gap: 14px; }
-                      .generated { text-align: left; }
-                      .run-state-badge { margin-left: 0; }
+                      .run-summary { min-width: 0; width: 100%; }
+                      .run-summary-meta { flex-wrap: wrap; }
                       .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-                      .metric { min-height: 94px; padding: 14px; border-right: 1px solid #243346; }
-                      .metric:nth-child(3) { border-right: 1px solid #243346; }
-                      .metric:nth-child(even) { border-right: 0; }
-                      .metric:nth-child(n + 3) { border-top: 1px solid #243346; }
+                      .metric { min-height: 100px; padding: 14px; }
                       .metric-value { font-size: 26px; }
                       .panels { grid-template-columns: 1fr; gap: 10px; }
                       .panel { padding: 16px; }
+                      .distribution-layout { grid-template-columns: minmax(120px, .7fr) minmax(0, 1fr); gap: 14px; }
+                      .distribution { width: min(100%, 170px); }
+                      .category-heading, .category-row { grid-template-columns: 58px minmax(28px, 1fr) 48px 52px; gap: 6px; }
+                      .category-heading { font-size: 9px; letter-spacing: 0; }
+                      .category-name, .category-count, .category-rate { font-size: 10px; }
                       .results-heading { align-items: flex-start; flex-direction: column; padding: 16px; }
                       .toolbar { padding: 10px; }
                       .search { flex-basis: 100%; }
@@ -395,11 +436,16 @@ public final class GenerateDashboard {
                     @media (max-width: 390px) {
                       .topbar { gap: 9px; padding-inline: 10px; }
                       .topbar-title { font-size: 11px; }
+                      .topbar-meta { gap: 6px; }
+                      .source-chip { display: none; }
                       .avatar { width: 30px; height: 30px; flex: 0 0 30px; }
                       .metrics { grid-template-columns: 1fr; }
-                      .metric, .metric:nth-child(3), .metric:nth-child(even) { border-right: 0; }
-                      .metric:nth-child(n + 2) { border-top: 1px solid #243346; }
-                      .category-row { grid-template-columns: 58px minmax(36px, 1fr) auto; gap: 7px; }
+                      .distribution-layout { grid-template-columns: minmax(105px, .7fr) minmax(0, 1fr); gap: 10px; }
+                      .distribution { width: min(100%, 145px); }
+                      .legend-item { grid-template-columns: 8px minmax(0, 1fr) auto; gap: 6px; font-size: 11px; }
+                      .category-heading, .category-row { grid-template-columns: 52px minmax(24px, 1fr) 42px 46px; gap: 5px; }
+                      .category-heading { font-size: 8px; }
+                      .category-name, .category-count, .category-rate { font-size: 9px; }
                     }
                     @media (prefers-reduced-motion: reduce) {
                       *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important;
@@ -423,24 +469,29 @@ public final class GenerateDashboard {
                     </aside>
                     <main>
                       <header class="topbar glass">
-                        <div class="topbar-title"><span class="run-mark" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M2 12.5h3V8h3v2h3V4h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>QA Automation <span aria-hidden="true">/</span> Latest execution</span></div>
-                        <div class="avatar" aria-label="QA Dashboard">QA</div>
+                        <div class="topbar-title"><span class="run-mark" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M2 12.5h3V8h3v2h3V4h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>QA Automation <span class="breadcrumb-separator" aria-hidden="true">/</span> <span class="topbar-context">Latest execution</span></span></div>
+                        <div class="topbar-meta"><span class="source-chip"><svg aria-hidden="true" viewBox="0 0 16 16" fill="none"><path d="M3 3.5h10M3 7.5h10M3 11.5h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Maven Surefire</span><div class="avatar" aria-label="QA Dashboard">QA</div></div>
                       </header>
                       <section id="overview" aria-labelledby="page-title">
                         <div class="heading">
-                          <div><h1 id="page-title">QA Dashboard</h1><p class="subtitle">A focused view of API, web and end-to-end test quality.</p></div>
-                          <div class="generated">Report generated<br><strong id="generated-at">—</strong><div class="run-state-badge" id="run-outcome">—</div><div class="run-state">Pass rate <strong id="pass-rate">—</strong></div><div>Run duration <strong id="run-duration">—</strong></div></div>
+                          <div class="page-intro"><h1 id="page-title">QA Dashboard</h1><p class="subtitle">A focused view of API, web and end-to-end test quality.</p></div>
+                          <div class="run-summary"><div class="generated">Report generated <strong id="generated-at">—</strong></div><div class="run-summary-meta"><div class="run-state-badge" id="run-outcome">—</div><div class="run-state">Pass rate <strong id="pass-rate">—</strong></div><div class="run-duration">Run duration <strong id="run-duration">—</strong></div></div></div>
                         </div>
                         <div id="metrics" class="metrics" aria-label="Run metrics"></div>
                       </section>
                       <section id="analytics" class="panels" aria-label="Test analytics">
                         <article class="panel">
                           <h2>Overall result distribution</h2><p class="panel-subtitle">Share of all test case executions by outcome.</p>
-                          <div id="distribution" class="distribution" role="img" aria-label="Test result distribution"></div>
-                          <div id="legend" class="legend"></div>
+                          <div class="distribution-layout">
+                            <div id="distribution" class="distribution" role="img" aria-label="Test result distribution">
+                              <div class="distribution-center"><span id="distribution-total" class="distribution-total">—</span><span class="distribution-caption">tests</span></div>
+                            </div>
+                            <div id="legend" class="legend" aria-label="Result counts and percentages"></div>
+                          </div>
                         </article>
                         <article class="panel">
-                          <h2>Results by category</h2><p class="panel-subtitle">Execution volume and pass rate from Surefire test cases.</p>
+                          <h2>Results by category</h2><p class="panel-subtitle">Bar length shows test volume; pass rate is reported separately.</p>
+                          <div class="category-heading" aria-hidden="true"><span>Category</span><span>Test volume</span><span>Tests</span><span>Pass rate</span></div>
                           <div id="categories" class="category-list"></div>
                         </article>
                       </section>
@@ -457,7 +508,14 @@ public final class GenerateDashboard {
                         </div>
                         <div class="table-wrap" tabindex="0" role="region" aria-label="Test case execution results">
                           <table>
-                            <thead><tr><th scope="col">Test</th><th scope="col">Class</th><th scope="col">Category</th><th scope="col">Status</th><th scope="col">Duration</th><th scope="col">Details</th></tr></thead>
+                            <thead><tr>
+                              <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-sort="name" aria-pressed="false">Test<span class="sort-indicator" aria-hidden="true">↕</span></button></th>
+                              <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-sort="className" aria-pressed="false">Class<span class="sort-indicator" aria-hidden="true">↕</span></button></th>
+                              <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-sort="category" aria-pressed="false">Category<span class="sort-indicator" aria-hidden="true">↕</span></button></th>
+                              <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-sort="status" aria-pressed="false">Status<span class="sort-indicator" aria-hidden="true">↕</span></button></th>
+                              <th scope="col" aria-sort="none"><button class="sort-button" type="button" data-sort="durationSeconds" aria-pressed="false">Duration<span class="sort-indicator" aria-hidden="true">↕</span></button></th>
+                              <th scope="col">Details</th>
+                            </tr></thead>
                             <tbody id="case-rows"></tbody>
                           </table>
                           <div id="empty-state" class="empty" role="status" aria-live="polite" hidden><span class="empty-mark" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none"><circle cx="8.5" cy="8.5" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="m12 12 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span>No test cases match the selected filters.</span></div>
@@ -473,7 +531,7 @@ public final class GenerateDashboard {
                       const categories = ['API', 'Web UI', 'E2E'];
                       const statuses = [
                         {key: 'passed', label: 'Passed', color: 'var(--green)'},
-                        {key: 'failed', label: 'Failed', color: 'var(--red)'},
+                        {key: 'failed', label: 'Failures', color: 'var(--red)'},
                         {key: 'errors', label: 'Errors', color: 'var(--red)'},
                         {key: 'skipped', label: 'Skipped', color: 'var(--amber)'}
                       ];
@@ -527,18 +585,28 @@ public final class GenerateDashboard {
 
                       const distribution = document.getElementById('distribution');
                       const legend = document.getElementById('legend');
+                      const distributionSegments = [];
+                      let currentAngle = 0;
+                      document.getElementById('distribution-total').textContent = String(summary.total);
+                      const distributionValues = [];
                       statuses.forEach(item => {
                         const count = summary[item.key];
-                        const segment = make('span', item.key);
-                        segment.style.width = `${pct(count, summary.total)}%`;
-                        segment.title = `${item.label}: ${count}`;
-                        distribution.append(segment);
+                        const percentage = pct(count, summary.total);
+                        const degrees = percentage * 3.6;
+                        if (count > 0) {
+                          distributionSegments.push(`${item.color} ${currentAngle}deg ${currentAngle + degrees}deg`);
+                          currentAngle += degrees;
+                        }
+                        distributionValues.push(`${item.label}: ${count} (${percentage.toFixed(1)}%)`);
                         const legendItem = make('span', 'legend-item');
                         const dot = make('span', 'dot');
                         dot.style.background = item.color;
-                        legendItem.append(dot, document.createTextNode(`${item.label} · ${count}`));
+                        legendItem.append(dot, make('span', '', item.label), make('span', 'legend-value', `${count} · ${percentage.toFixed(1)}%`));
                         legend.append(legendItem);
                       });
+                      distribution.style.background = distributionSegments.length
+                        ? `conic-gradient(${distributionSegments.join(', ')})` : '#263448';
+                      distribution.setAttribute('aria-label', `Test result distribution. ${distributionValues.join('. ')}`);
 
                       const categoryStats = categories.map(category => ({category, ...countByStatus(report.cases.filter(test => test.category === category))}));
                       const maxCategory = Math.max(1, ...categoryStats.map(item => item.total));
@@ -549,9 +617,13 @@ public final class GenerateDashboard {
                         const track = make('div', 'category-track');
                         const bar = make('span');
                         bar.style.width = `${item.total * 100 / maxCategory}%`;
+                        track.setAttribute('role', 'img');
+                        track.setAttribute('aria-label', `${item.total} tests; volume scale maximum ${maxCategory}`);
+                        track.title = `${item.total} tests (volume)`;
                         track.append(bar);
-                        const meta = make('div', 'category-meta', `${item.total} tests · ${pct(item.passed, item.total).toFixed(1)}% pass`);
-                        row.append(name, track, meta);
+                        const count = make('div', 'category-count', String(item.total));
+                        const passRate = make('div', 'category-rate', `${pct(item.passed, item.total).toFixed(1)}%`);
+                        row.append(name, track, count, passRate);
                         categoryList.append(row);
                       });
 
@@ -561,7 +633,31 @@ public final class GenerateDashboard {
                       const body = document.getElementById('case-rows');
                       const empty = document.getElementById('empty-state');
                       const resultCount = document.getElementById('result-count');
+                      const sortButtons = [...document.querySelectorAll('.sort-button')];
+                      const statusOrder = {Passed: 0, Failed: 1, Error: 2, Skipped: 3};
+                      let sortState = null;
                       const statusClass = status => status.toLowerCase();
+                      const updateSortControls = () => sortButtons.forEach(button => {
+                        const header = button.closest('th');
+                        const active = sortState && sortState.key === button.dataset.sort;
+                        const indicator = button.querySelector('.sort-indicator');
+                        header.setAttribute('aria-sort', active ? sortState.direction === 1 ? 'ascending' : 'descending' : 'none');
+                        button.setAttribute('aria-pressed', String(Boolean(active)));
+                        indicator.textContent = active ? sortState.direction === 1 ? '↑' : '↓' : '↕';
+                        button.setAttribute('aria-label', `Sort by ${button.firstChild.textContent.trim()}${active ? sortState.direction === 1 ? ', ascending' : ', descending' : ''}`);
+                      });
+                      sortButtons.forEach(button => button.addEventListener('click', () => {
+                        const key = button.dataset.sort;
+                        if (!sortState || sortState.key !== key) {
+                          sortState = {key, direction: 1};
+                        } else if (sortState.direction === 1) {
+                          sortState.direction = -1;
+                        } else {
+                          sortState = null;
+                        }
+                        updateSortControls();
+                        renderRows();
+                      }));
                       const renderRows = () => {
                         const query = search.value.trim().toLocaleLowerCase();
                         const selectedCategory = categoryFilter.value;
@@ -572,6 +668,20 @@ public final class GenerateDashboard {
                             && (selectedCategory === 'all' || test.category === selectedCategory)
                             && (selectedStatus === 'all' || test.status === selectedStatus);
                         });
+                        if (sortState) {
+                          filtered.sort((left, right) => {
+                            let comparison;
+                            if (sortState.key === 'durationSeconds') {
+                              comparison = left.durationSeconds - right.durationSeconds;
+                            } else if (sortState.key === 'status') {
+                              comparison = statusOrder[left.status] - statusOrder[right.status];
+                            } else {
+                              comparison = String(left[sortState.key]).localeCompare(String(right[sortState.key]), undefined,
+                                {numeric: true, sensitivity: 'base'});
+                            }
+                            return comparison * sortState.direction;
+                          });
+                        }
                         body.replaceChildren();
                         filtered.forEach(test => {
                           const row = document.createElement('tr');
@@ -585,10 +695,17 @@ public final class GenerateDashboard {
                           statusCell.append(badge);
                           const durationCell = make('td', '', duration(test.durationSeconds));
                           const detailCell = document.createElement('td');
-                          if (test.message || test.detail) {
+                          const hasFailure = test.status === 'Failed' || test.status === 'Error';
+                          if (test.message || test.detail || hasFailure) {
                             const details = make('details', 'details');
-                            details.append(make('summary', '', test.message || 'View failure details'));
-                            if (test.detail) details.append(make('pre', '', test.detail));
+                            details.append(make('summary', '', test.message || (hasFailure ? 'Open failure details' : 'Open execution details')));
+                            if (test.detail) {
+                              details.append(make('pre', '', test.detail));
+                            } else if (hasFailure) {
+                              details.append(make('p', 'details-unavailable', test.message
+                                ? 'Stack trace is not available in the Surefire XML.'
+                                : 'Failure message and stack trace are not available in the Surefire XML.'));
+                            }
                             detailCell.append(details);
                           } else {
                             detailCell.textContent = '—';
@@ -608,6 +725,7 @@ public final class GenerateDashboard {
                         renderRows();
                         search.focus();
                       });
+                      updateSortControls();
                       renderRows();
                     })();
                   </script>
