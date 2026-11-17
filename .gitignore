@@ -1,5 +1,8 @@
 # Maven build output and test artifacts
 target/
+dashboard/node_modules/
+dashboard/dist/
+dashboard/.vite/
 
 # Compiled Java files
 *.class

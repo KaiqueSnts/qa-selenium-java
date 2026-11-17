@@ -1,0 +1,47 @@
+.sparkle-button {
+  --pad-y: .7rem;
+  --pad-x: 1.4rem;
+  --font: .875rem;
+  --icon: 1.25rem;
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: var(--pad-y) var(--pad-x);
+  overflow: hidden;
+  border: 1px solid var(--silver-text, #c3c3cc);
+  border-radius: 999px;
+  color: var(--purple-white, #f5f4fd);
+  background: transparent;
+  font-size: var(--font);
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgb(23 23 33 / .25), inset 0 1px 0 rgb(255 255 255 / .2);
+  transition: transform 300ms ease, box-shadow 300ms ease;
+}
+.sparkle-button[data-size="sm"] { --pad-y: .5rem; --pad-x: 1rem; --font: .8rem; --icon: 1rem; min-height: 40px; }
+.sparkle-button::before { content: ''; position: absolute; z-index: -2; width: 240%; aspect-ratio: 1; background: conic-gradient(from 30deg, #5266eb, #ab82ec, #edecf9, #5266eb); }
+.sparkle-button::after { content: ''; position: absolute; z-index: -1; inset: 2px; border-radius: inherit; background: linear-gradient(120deg, rgb(70 56 102 / .94), rgb(50 54 69 / .95)); }
+.sparkle-button svg { width: var(--icon); height: var(--icon); }
+.sparkle-button > span { position: relative; }
+.sparkle-button:hover:not(:disabled), .sparkle-button:active:not(:disabled) { background-color: transparent; }
+.panel-heading .sparkle-button { white-space: nowrap; margin: -4px 0 0; }
+.sparkle-button:focus-visible { outline: 2px solid var(--purple-white, #f5f4fd); outline-offset: 4px; }
+.sparkle-button:focus-visible::before { animation: sparkle-orbit 3s linear infinite; }
+@media (hover: hover) and (pointer: fine) {
+  .sparkle-button:hover:not(:disabled) { transform: scale(1.025); box-shadow: 0 4px 22px rgb(82 102 235 / .35); }
+  .sparkle-button:hover:not(:disabled)::before { animation: sparkle-orbit 3s linear infinite; }
+  .sparkle-button:hover:not(:disabled)::after { background: linear-gradient(120deg, #65448c, #354398); }
+  .sparkle-button:hover:not(:disabled) .sparkle-button-icon { animation: sparkle-glint 1.5s ease-in-out infinite alternate; }
+}
+.sparkle-button:active:not(:disabled) { transform: scale(.98); }
+.sparkle-button:disabled { opacity: .5; cursor: not-allowed; }
+@keyframes sparkle-orbit { to { transform: rotate(360deg); } }
+@keyframes sparkle-glint { to { opacity: .65; transform: scale(.9); } }
+@media (prefers-reduced-motion: reduce) {
+  .sparkle-button, .sparkle-button::before, .sparkle-button::after, .sparkle-button * { animation: none; transition: none; }
+  .sparkle-button:hover:not(:disabled), .sparkle-button:active:not(:disabled) { transform: none; }
+}
